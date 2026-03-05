@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Calendar, Clock, MapPin, Users } from "lucide-react";
 import aiHead from "@/assets/ai-head.png";
+import { useTranslation } from "@/i18n";
 
 const HeroSection = () => {
+  const { t } = useTranslation();
+  
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden pt-16">
       {/* Background gradient */}
@@ -45,7 +48,7 @@ const HeroSection = () => {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5 mb-4">
               <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-sm font-mono-display text-primary">Free Workshop · March 2026</span>
+              <span className="text-sm font-mono-display text-primary">{t("freeWorkshop")}</span>
             </div>
           </motion.div>
 
@@ -55,9 +58,24 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.05 }}
             className="mb-4"
           >
-            <p className="text-sm text-muted-foreground font-mono-display">
-              An initiative by <span className="text-primary font-semibold">Mensagam</span> & <span className="text-accent font-semibold">RP Mission Foundation</span>
-            </p>
+            <div className="group inline-block px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border border-primary/20 hover:border-primary/50 transition-all duration-300 cursor-default">
+              <p className="text-sm text-muted-foreground font-mono-display">
+                <span className="inline-flex items-center gap-1">
+                  <span className="text-xs text-primary font-bold">✨</span>
+                  {t("initiativeBy")}
+                </span>
+                <span className="text-primary font-bold group-hover:text-accent transition-colors duration-300 ml-2">
+                  Mensagam
+                </span>
+                <span className="text-foreground/60 mx-2 group-hover:text-foreground/80 transition-colors">|</span>
+                <span className="text-accent font-bold group-hover:text-primary transition-colors duration-300">
+                  RP Mission Foundation
+                </span>
+                <span className="inline-flex items-center gap-1 ml-2">
+                  <span className="text-xs text-accent font-bold">✨</span>
+                </span>
+              </p>
+            </div>
           </motion.div>
 
           <motion.h1
@@ -106,34 +124,34 @@ const HeroSection = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.7 }}
-            className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4"
+            className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-6"
           >
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-primary" />
+            <div className="flex items-center gap-3 bg-card/40 backdrop-blur border border-border/30 rounded-lg p-4 hover:bg-card/60 transition-all">
+              <Calendar className="w-6 h-6 text-primary flex-shrink-0" />
               <div>
-                <span className="text-xs font-bold text-foreground font-mono-display">9–13 March</span>
-                <p className="text-[10px] text-muted-foreground">5 Days</p>
+                <span className="text-sm font-bold text-foreground font-mono-display block">9–13 March</span>
+                <p className="text-xs text-muted-foreground">5 Days</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-primary" />
+            <div className="flex items-center gap-3 bg-card/40 backdrop-blur border border-border/30 rounded-lg p-4 hover:bg-card/60 transition-all">
+              <Clock className="w-6 h-6 text-primary flex-shrink-0" />
               <div>
-                <span className="text-xs font-bold text-foreground font-mono-display">7–8 PM</span>
-                <p className="text-[10px] text-muted-foreground">Daily</p>
+                <span className="text-sm font-bold text-foreground font-mono-display block">7–8 PM</span>
+                <p className="text-xs text-muted-foreground">Daily</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-primary" />
+            <div className="flex items-center gap-3 bg-card/40 backdrop-blur border border-border/30 rounded-lg p-4 hover:bg-card/60 transition-all">
+              <MapPin className="w-6 h-6 text-primary flex-shrink-0" />
               <div>
-                <span className="text-xs font-bold text-foreground font-mono-display">Online</span>
-                <p className="text-[10px] text-muted-foreground">Live Sessions</p>
+                <span className="text-sm font-bold text-foreground font-mono-display block">Online</span>
+                <p className="text-xs text-muted-foreground">Live Sessions</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-primary" />
+            <div className="flex items-center gap-3 bg-card/40 backdrop-blur border border-border/30 rounded-lg p-4 hover:bg-card/60 transition-all">
+              <Users className="w-6 h-6 text-primary flex-shrink-0" />
               <div>
-                <span className="text-xs font-bold text-foreground font-mono-display">Free</span>
-                <p className="text-[10px] text-muted-foreground">For Students</p>
+                <span className="text-sm font-bold text-foreground font-mono-display block">Free</span>
+                <p className="text-xs text-muted-foreground">For Students</p>
               </div>
             </div>
           </motion.div>

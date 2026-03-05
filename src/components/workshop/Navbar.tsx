@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
 import { Menu, X, Sun, Moon } from "lucide-react";
+import { useTranslation } from "@/i18n";
 import logo from "@/assets/logo.png";
 
 const navItems = [
@@ -12,16 +14,10 @@ const navItems = [
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-
-  // Apply dark mode class to html
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
+  const { theme, setTheme } = useTheme();
+  const { lang, setLang, t } = useTranslation();
+  const darkMode = theme === "dark";
+  // Note: theme is provided by next-themes ThemeProvider
 
   return (
     <motion.nav
@@ -34,12 +30,13 @@ const Navbar = () => {
         
         {/* Logo + Brand */}
         <a href="#" className="flex items-center gap-3">
-          <img
+          <motion.img
             src={logo}
             alt="Company Logo"
             className="h-10 w-auto object-contain"
+            animate={{ y: [0, -8, 0] }}
+            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
           />
-          
         </a>
 
         {/* Desktop nav */}
@@ -58,30 +55,33 @@ const Navbar = () => {
             </a>
           ))}
 
+          {/* Language toggle */}
+          <select
+            value={lang}
+            onChange={(e) => setLang(e.target.value as any)}
+            className="ml-4 p-1 rounded bg-secondary border border-border text-foreground text-xs"
+          >
+            <option value="en">EN</option>
+            <option value="hi">हिं</option>
+            <option value="ja">日本</option>
+          </select>
+
           {/* Dark/Light Toggle */}
           <button
-            onClick={() => setDarkMode(!darkMode)}
+            onClick={() => setTheme(darkMode ? "light" : "dark")}
             className="ml-4 p-2 rounded-full hover:bg-muted transition"
           >
-            {darkMode ? (
-              <Sun className="w-5 h-5" />
-            ) : (
-              <Moon className="w-5 h-5" />
-            )}
+            {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
         </div>
 
         {/* Mobile toggle */}
         <div className="flex items-center gap-3 md:hidden">
           <button
-            onClick={() => setDarkMode(!darkMode)}
+            onClick={() => setTheme(darkMode ? "light" : "dark")}
             className="p-2 rounded-full hover:bg-muted transition"
           >
-            {darkMode ? (
-              <Sun className="w-5 h-5" />
-            ) : (
-              <Moon className="w-5 h-5" />
-            )}
+            {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
 
           <button

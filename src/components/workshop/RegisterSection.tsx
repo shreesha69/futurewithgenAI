@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "@/i18n";
 
 const RegisterSection = () => {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const { t } = useTranslation();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,10 +24,10 @@ const RegisterSection = () => {
           className="glass-card rounded-2xl p-8 md:p-12 text-center glow-primary"
         >
           <h2 className="text-3xl md:text-4xl font-bold font-mono-display mb-4">
-            Register <span className="text-gradient-primary">Free</span>
+            {t("registerHeading")} <span className="text-gradient-primary">Free</span>
           </h2>
           <p className="text-muted-foreground mb-2 max-w-md mx-auto">
-            Open exclusively to college students in Pondicherry. Five evenings that could change your career.
+            {t("openTo")}
           </p>
           <p className="text-xs text-muted-foreground mb-8">
             9–13 March · 7:00–8:00 PM · Online
@@ -45,7 +47,7 @@ const RegisterSection = () => {
                 type="submit"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-mono-display font-semibold text-sm hover:brightness-110 transition-all shrink-0"
               >
-                Register
+                {t("registerFree")}
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>
