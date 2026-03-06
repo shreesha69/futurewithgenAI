@@ -1,44 +1,250 @@
-import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, Calendar, Clock, MapPin, Users } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { ArrowRight, Sparkles, Calendar, Clock, MapPin, Users, Brain, Cpu, Zap } from "lucide-react";
 import aiHead from "@/assets/ai-head.png";
 import { useTranslation } from "@/i18n";
+import SplitText from "@/components/SplitText";
+import MouseTracker from "@/components/MouseTracker";
 
 const HeroSection = () => {
   const { t } = useTranslation();
-  
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 1000], [0, -200]);
+  const opacity = useTransform(scrollY, [0, 500], [1, 0.3]);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  const floatingIcons = [
+    { Icon: Brain, delay: 0, x: 100, y: 50 },
+    { Icon: Cpu, delay: 1, x: 200, y: 150 },
+    { Icon: Sparkles, delay: 2, x: 300, y: 100 },
+    { Icon: Zap, delay: 3, x: 150, y: 200 },
+  ];
+
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden pt-16">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-accent/10" />
+    <section className="relative min-h-screen flex items-center overflow-hidden pt-16 hero-gradient particle-bg floating-elements ai-texture-bg cyber-grid-bg">
+      {/* Mouse Tracker */}
+      <MouseTracker />
 
-      {/* Grid overlay */}
-      <div className="absolute inset-0 grid-lines opacity-30" />
-
-      {/* Wave decoration at bottom */}
-      <div className="wave-decoration" />
-
-      {/* Floating decorative dots */}
+      {/* Enhanced background effects - More dramatic */}
       <motion.div
-        animate={{ opacity: [0.3, 0.8, 0.3] }}
-        transition={{ duration: 3, repeat: Infinity }}
-        className="absolute top-24 right-32 hidden lg:flex gap-1"
+        style={{ y }}
+        className="absolute inset-0 cyber-grid opacity-30"
+      />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10" />
+
+      {/* Dramatic Parallax Background */}
+      <motion.div
+        style={{ y }}
+        className="absolute inset-0 opacity-40"
       >
-        {[...Array(5)].map((_, i) => (
-          <div key={i} className="w-2 h-2 rounded-full bg-primary" />
-        ))}
+        <div className="absolute top-10 left-5 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute bottom-10 right-5 w-[600px] h-[600px] bg-accent/20 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-1/3 left-1/3 w-[400px] h-[400px] bg-gradient-radial from-primary/15 to-transparent rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-1/3 right-1/3 w-[500px] h-[500px] bg-gradient-radial from-accent/15 to-transparent rounded-full blur-3xl animate-bounce-subtle" />
       </motion.div>
 
-      <motion.div
-        animate={{ opacity: [0.3, 0.8, 0.3] }}
-        transition={{ duration: 3, repeat: Infinity, delay: 1.5 }}
-        className="absolute bottom-32 left-16 hidden lg:flex gap-1"
-      >
-        {[...Array(5)].map((_, i) => (
-          <div key={i} className="w-2 h-2 rounded-full bg-primary" />
+      {/* Enhanced Neural Network Particles - More visible */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(35)].map((_, i) => (
+          <motion.div
+            key={`particle-${i}`}
+            className="absolute w-2 h-2 bg-primary/60 rounded-full animate-particle-pulse"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+            }}
+            animate={{
+              y: [0, -25, 0],
+              opacity: [0.3, 0.9, 0.3],
+              scale: [1, 1.8, 1],
+            }}
+            transition={{
+              duration: 4 + Math.random() * 4,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
         ))}
-      </motion.div>
+      </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      {/* More Dramatic Connecting Lines */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40">
+        <defs>
+          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.6" />
+            <stop offset="50%" stopColor="hsl(var(--accent))" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.6" />
+          </linearGradient>
+        </defs>
+        {[...Array(12)].map((_, i) => (
+          <motion.line
+            key={`line-${i}`}
+            x1={`${15 + Math.random() * 70}%`}
+            y1={`${15 + Math.random() * 70}%`}
+            x2={`${15 + Math.random() * 70}%`}
+            y2={`${15 + Math.random() * 70}%`}
+            stroke="url(#lineGradient)"
+            strokeWidth="2"
+            strokeDasharray="8,8"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{
+              duration: 4,
+              delay: i * 0.6,
+              repeat: Infinity,
+              repeatType: "reverse",
+            }}
+          />
+        ))}
+      </svg>
+
+      {/* Data Waveform Animation */}
+      <div className="absolute bottom-0 left-0 w-full h-32 opacity-30 pointer-events-none">
+        <svg className="w-full h-full" viewBox="0 0 1200 100" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.2" />
+              <stop offset="50%" stopColor="hsl(var(--accent))" stopOpacity="0.4" />
+              <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.2" />
+            </linearGradient>
+          </defs>
+          <motion.path
+            d="M0,50 Q300,20 600,50 T1200,50"
+            stroke="url(#waveGradient)"
+            strokeWidth="2"
+            fill="none"
+            animate={{
+              d: [
+                "M0,50 Q300,20 600,50 T1200,50",
+                "M0,30 Q300,70 600,30 T1200,30",
+                "M0,70 Q300,30 600,70 T1200,70",
+                "M0,50 Q300,20 600,50 T1200,50",
+              ],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        </svg>
+      </div>
+
+      {/* Enhanced Floating Geometric Shapes */}
+      <motion.div
+        className="absolute top-20 right-20 w-32 h-32 border-2 border-primary/30 rounded-lg rotate-45 animate-float glass-morphism"
+        style={{ animationDelay: '0s' }}
+        animate={{
+          rotate: [45, 90, 45],
+          scale: [1, 1.1, 1],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      <motion.div
+        className="absolute bottom-32 left-16 w-24 h-24 bg-accent/20 rounded-full animate-bounce-subtle blur-sm"
+        style={{ animationDelay: '1s' }}
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.7, 0.3],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      <motion.div
+        className="absolute top-1/2 left-10 w-16 h-16 border-2 border-accent/40 animate-rotate-slow"
+        style={{ animationDelay: '2s' }}
+        animate={{
+          borderColor: [
+            "hsl(var(--accent) / 0.4)",
+            "hsl(var(--primary) / 0.4)",
+            "hsl(var(--accent) / 0.4)",
+          ],
+        }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* Circuit Board Grid Overlay */}
+      <div className="absolute inset-0 cyber-grid opacity-5 pointer-events-none" />
+
+      {/* Floating Icons */}
+      {floatingIcons.map(({ Icon, delay, x, y }, index) => (
+        <motion.div
+          key={index}
+          className="absolute text-primary/20"
+          style={{ left: x, top: y }}
+          animate={{
+            y: [0, -20, 0],
+            x: [0, 10, 0],
+            rotate: [0, 360],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            duration: 4 + delay,
+            repeat: Infinity,
+            delay: delay,
+            ease: "easeInOut",
+          }}
+        >
+          <Icon className="w-8 h-8" />
+        </motion.div>
+      ))}
+
+      {/* Interactive Mouse-Following Glow */}
+      <motion.div
+        className="absolute pointer-events-none z-0"
+        style={{
+          left: mousePosition.x - 150,
+          top: mousePosition.y - 150,
+          width: 300,
+          height: 300,
+        }}
+        animate={{
+          background: [
+            "radial-gradient(circle, hsl(var(--primary) / 0.1) 0%, transparent 70%)",
+            "radial-gradient(circle, hsl(var(--accent) / 0.1) 0%, transparent 70%)",
+            "radial-gradient(circle, hsl(var(--primary) / 0.1) 0%, transparent 70%)",
+          ],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* Scroll-Triggered Background Shift */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `radial-gradient(circle at ${50 + (mousePosition.x / window.innerWidth) * 20}% ${50 + (mousePosition.y / window.innerHeight) * 20}%, hsl(var(--primary) / 0.05) 0%, transparent 50%)`,
+          opacity,
+        }}
+      />
+
+      <motion.div
+        style={{ opacity }}
+        className="relative z-10 max-w-6xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+      >
         {/* Left content */}
         <div className="text-left">
           <motion.div
@@ -46,56 +252,57 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5 mb-4">
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-sm font-mono-display text-primary">{t("freeWorkshop")}</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-morphism mb-6 animate-pulse-glow">
+              <Sparkles className="w-4 h-4 text-primary animate-bounce-subtle" />
+              <span className="text-sm font-mono-display text-primary font-bold">{t("freeWorkshop")}</span>
             </div>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.05 }}
-            className="mb-4"
-          >
-            <div className="group inline-block px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border border-primary/20 hover:border-primary/50 transition-all duration-300 cursor-default">
-              <p className="text-sm text-muted-foreground font-mono-display">
-                <span className="inline-flex items-center gap-1">
-                  <span className="text-xs text-primary font-bold">✨</span>
-                  {t("initiativeBy")}
-                </span>
-                <span className="text-primary font-bold group-hover:text-accent transition-colors duration-300 ml-2">
-                  Mensagam
-                </span>
-                <span className="text-foreground/60 mx-2 group-hover:text-foreground/80 transition-colors">|</span>
-                <span className="text-accent font-bold group-hover:text-primary transition-colors duration-300">
-                  RP Mission Foundation
-                </span>
-                <span className="inline-flex items-center gap-1 ml-2">
-                  <span className="text-xs text-accent font-bold">✨</span>
-                </span>
-              </p>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border border-primary/20 hover:border-primary/50 transition-all duration-300 cursor-default mb-6 magnetic-hover">
+              <span className="text-xs text-primary font-bold">✨</span>
+              <span className="text-foreground group-hover:text-foreground transition-colors font-mono-display">
+                {t("initiativeBy")}
+              </span>
+              <span className="text-primary font-bold hover:text-accent transition-colors ml-2">
+                Mensagam
+              </span>
+              <span className="text-foreground/60 mx-2">|</span>
+              <span className="text-accent font-bold hover:text-primary transition-colors">
+                RP Mission Foundation
+              </span>
+              <span className="inline-flex items-center gap-1 ml-2">
+                <span className="text-xs text-accent font-bold">✨</span>
+              </span>
             </div>
-          </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.15 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold font-mono-display leading-tight mb-6"
+            className="text-display-2xl leading-tight mb-6 text-shadow-strong"
           >
-            <span className="text-foreground">GENERATIVE</span>
-            <br />
-            <span className="text-gradient-primary glow-text">AI WORKSHOP</span>
+            <SplitText
+              text="GENERATIVE AI WORKSHOP"
+              className="text-gradient-animated animate-text-glow"
+              delay={0.05}
+              animationType="characters"
+            />
+            <motion.div
+              className="mt-4 h-1 bg-gradient-to-r from-primary to-accent rounded-full"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 1, delay: 0.5 }}
+            />
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-base md:text-lg text-muted-foreground max-w-lg mb-8 leading-relaxed"
+            className="text-body-lg text-muted-foreground max-w-3xl mx-auto mb-12 leading-relaxed text-readable text-shadow-soft"
           >
-            Empowering college students in Pondicherry to master generative AI — from prompt engineering to building real-world AI applications.
+            Join our intensive workshop to explore cutting-edge Generative AI technologies,
+            from foundation models to practical applications. Learn from industry experts
+            and build your own AI-powered solutions.
           </motion.p>
 
           <motion.div
@@ -104,56 +311,123 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.45 }}
             className="flex flex-col sm:flex-row gap-4"
           >
-            <a
+            <motion.a
               href="#register"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-mono-display font-semibold text-sm glow-primary hover:brightness-110 transition-all"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-mono-display font-semibold text-sm glow-primary hover:brightness-110 transition-all magnetic-hover group interactive-glow animate-neon-primary text-shadow-soft"
             >
               Register Free
-              <ArrowRight className="w-4 h-4" />
-            </a>
-            <a
+              <motion.div
+                animate={{ x: [0, 5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </motion.div>
+            </motion.a>
+            <motion.a
               href="#topics"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border border-border text-foreground font-mono-display font-semibold text-sm hover:bg-secondary transition-all"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border border-border text-foreground font-mono-display font-semibold text-sm hover:bg-secondary transition-all magnetic-hover group glass-advanced text-shadow-soft"
             >
               View Agenda
-            </a>
+              <motion.div
+                className="w-2 h-2 bg-accent rounded-full ml-2"
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+            </motion.a>
+          </motion.div>
+
+          {/* Stats section with holographic cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mt-12 grid grid-cols-3 gap-4 max-w-md"
+          >
+            <motion.div
+              className="holographic-card p-4 text-center group"
+              whileHover={{ scale: 1.05, y: -5 }}
+            >
+              <motion.div
+                className="text-2xl font-bold text-primary mb-1 animate-scale-pulse font-mono-display text-shadow-soft"
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                50+
+              </motion.div>
+              <div className="text-xs text-muted-foreground font-mono-display text-shadow-soft">Students</div>
+            </motion.div>
+            <motion.div
+              className="holographic-card p-4 text-center group"
+              whileHover={{ scale: 1.05, y: -5 }}
+            >
+              <motion.div
+                className="text-2xl font-bold text-accent mb-1 animate-scale-pulse font-mono-display text-shadow-soft"
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+              >
+                5
+              </motion.div>
+              <div className="text-xs text-muted-foreground font-mono-display text-shadow-soft">Sessions</div>
+            </motion.div>
+            <motion.div
+              className="holographic-card p-4 text-center group"
+              whileHover={{ scale: 1.05, y: -5 }}
+            >
+              <motion.div
+                className="text-2xl font-bold text-primary mb-1 animate-scale-pulse font-mono-display text-shadow-soft"
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+              >
+                Free
+              </motion.div>
+              <div className="text-xs text-muted-foreground font-mono-display text-shadow-soft">Workshop</div>
+            </motion.div>
           </motion.div>
 
           {/* Quick info strip */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.7 }}
-            className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-6"
+            transition={{ duration: 1, delay: 0.8 }}
+            className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4"
           >
-            <div className="flex items-center gap-3 bg-card/40 backdrop-blur border border-border/30 rounded-lg p-4 hover:bg-card/60 transition-all">
-              <Calendar className="w-6 h-6 text-primary flex-shrink-0" />
-              <div>
-                <span className="text-sm font-bold text-foreground font-mono-display block">9–13 March</span>
-                <p className="text-xs text-muted-foreground">5 Days</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 bg-card/40 backdrop-blur border border-border/30 rounded-lg p-4 hover:bg-card/60 transition-all">
-              <Clock className="w-6 h-6 text-primary flex-shrink-0" />
-              <div>
-                <span className="text-sm font-bold text-foreground font-mono-display block">7–8 PM</span>
-                <p className="text-xs text-muted-foreground">Daily</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 bg-card/40 backdrop-blur border border-border/30 rounded-lg p-4 hover:bg-card/60 transition-all">
-              <MapPin className="w-6 h-6 text-primary flex-shrink-0" />
-              <div>
-                <span className="text-sm font-bold text-foreground font-mono-display block">Online</span>
-                <p className="text-xs text-muted-foreground">Live Sessions</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 bg-card/40 backdrop-blur border border-border/30 rounded-lg p-4 hover:bg-card/60 transition-all">
-              <Users className="w-6 h-6 text-primary flex-shrink-0" />
-              <div>
-                <span className="text-sm font-bold text-foreground font-mono-display block">Free</span>
-                <p className="text-xs text-muted-foreground">For Students</p>
-              </div>
-            </div>
+            <motion.div
+              whileHover={{ scale: 1.05, y: -3 }}
+              className="holographic-card p-4 text-center group cursor-pointer magnetic-hover"
+            >
+              <Calendar className="w-6 h-6 text-primary mx-auto mb-2 group-hover:animate-bounce-subtle" />
+              <div className="text-sm font-bold text-foreground font-mono-display text-shadow-soft">9–13 March</div>
+              <div className="text-xs text-muted-foreground text-shadow-soft">5 Days</div>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05, y: -3 }}
+              className="holographic-card p-4 text-center group cursor-pointer magnetic-hover"
+            >
+              <Clock className="w-6 h-6 text-primary mx-auto mb-2 group-hover:animate-bounce-subtle" />
+              <div className="text-sm font-bold text-foreground font-mono-display text-shadow-soft">7–8 PM</div>
+              <div className="text-xs text-muted-foreground text-shadow-soft">Daily</div>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05, y: -3 }}
+              className="holographic-card p-4 text-center group cursor-pointer magnetic-hover"
+            >
+              <MapPin className="w-6 h-6 text-primary mx-auto mb-2 group-hover:animate-bounce-subtle" />
+              <div className="text-sm font-bold text-foreground font-mono-display text-shadow-soft">Online</div>
+              <div className="text-xs text-muted-foreground text-shadow-soft">Live Sessions</div>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05, y: -3 }}
+              className="holographic-card p-4 text-center group cursor-pointer magnetic-hover"
+            >
+              <Users className="w-6 h-6 text-primary mx-auto mb-2 group-hover:animate-bounce-subtle" />
+              <div className="text-sm font-bold text-foreground font-mono-display text-shadow-soft">Free</div>
+              <div className="text-xs text-muted-foreground text-shadow-soft">For Students</div>
+            </motion.div>
+          </motion.div>
           </motion.div>
         </div>
 
@@ -168,10 +442,18 @@ const HeroSection = () => {
           <div className="absolute w-80 h-80 rounded-full bg-accent/20 blur-[80px]" />
           <div className="absolute w-60 h-60 rounded-full bg-primary/15 blur-[60px] translate-x-8" />
 
-          <img
+          <motion.img
             src={aiHead}
             alt="AI wireframe head representing generative artificial intelligence"
             className="relative z-10 w-full max-w-md lg:max-w-lg drop-shadow-2xl"
+            animate={{
+              y: [0, -10, 0],
+              filter: ["brightness(1)", "brightness(1.1)", "brightness(1)"]
+            }}
+            transition={{
+              y: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+              filter: { duration: 2, repeat: Infinity }
+            }}
           />
 
           {/* Floating hexagon decorations */}
@@ -185,8 +467,28 @@ const HeroSection = () => {
             transition={{ duration: 5, repeat: Infinity }}
             className="absolute bottom-20 left-4 w-4 h-4 bg-primary/30 rounded-full"
           />
+          <motion.div
+            animate={{ x: [-5, 5, -5], scale: [1, 1.2, 1] }}
+            transition={{ duration: 4, repeat: Infinity }}
+            className="absolute top-1/2 right-8 w-6 h-6 border border-primary/30 rounded-full"
+          />
         </motion.div>
-      </div>
+      </motion.div>
+
+      {/* Scroll Indicator */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        <div className="w-6 h-10 border-2 border-border/50 rounded-full flex justify-center glass-advanced">
+          <motion.div
+            className="w-1 h-3 bg-primary rounded-full mt-2"
+            animate={{ y: [0, 12, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+        </div>
+      </motion.div>
     </section>
   );
 };
