@@ -18,7 +18,7 @@ const App = () => {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter>
+          <BrowserRouter basename="/shree/genai-workshop">  {/* ✅ added basename */}
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/thank-you" element={<ThankYou />} />
