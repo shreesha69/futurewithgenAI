@@ -8,7 +8,8 @@ interface UseScrollRevealOptions {
 
 export const useScrollReveal = (options: UseScrollRevealOptions = {}) => {
   const [isRevealed, setIsRevealed] = useState(false);
-  const ref = useRef<HTMLElement>(null);
+  // ✅ FIXED: Changed HTMLElement to HTMLDivElement
+  const ref = useRef<HTMLDivElement>(null);
 
   const { threshold = 0.1, rootMargin = "0px", triggerOnce = true } = options;
 
@@ -42,7 +43,8 @@ export const useScrollReveal = (options: UseScrollRevealOptions = {}) => {
 
 export const useParallax = (speed: number = 0.5) => {
   const [offset, setOffset] = useState(0);
-  const ref = useRef<HTMLElement>(null);
+  // ✅ FIXED: Changed HTMLElement to HTMLDivElement
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {

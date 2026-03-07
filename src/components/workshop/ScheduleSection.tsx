@@ -4,68 +4,68 @@ import { useTranslation } from "@/i18n";
 import { useScrollReveal, useParallax } from "@/hooks/useScrollReveal";
 import SplitText from "./SplitText";
 
-const days = [
-  {
-    day: "Day 1",
-    date: "March 9",
-    title: "Foundations",
-    color: "from-primary to-accent",
-    sessions: [
-      { time: "7:00 PM", topic: "Intro to Generative AI Landscape" },
-      { time: "7:30 PM", topic: "Hands-on: Your First LLM Prompt" },
-    ],
-  },
-  {
-    day: "Day 2",
-    date: "March 10",
-    title: "Prompt Engineering",
-    color: "from-accent to-primary",
-    sessions: [
-      { time: "7:00 PM", topic: "Advanced Prompting Techniques" },
-      { time: "7:30 PM", topic: "Hands-on: Chain-of-Thought & Few-Shot" },
-    ],
-  },
-  {
-    day: "Day 3",
-    date: "March 11",
-    title: "Building with LLMs",
-    color: "from-primary to-accent",
-    sessions: [
-      { time: "7:00 PM", topic: "LLM APIs & Integration" },
-      { time: "7:30 PM", topic: "Hands-on: Build an AI-Powered App" },
-    ],
-  },
-  {
-    day: "Day 4",
-    date: "March 12",
-    title: "Image & Multimodal AI",
-    color: "from-accent to-primary",
-    sessions: [
-      { time: "7:00 PM", topic: "Image Generation & Diffusion Models" },
-      { time: "7:30 PM", topic: "Hands-on: Multimodal AI Workflows" },
-    ],
-  },
-  {
-    day: "Day 5",
-    date: "March 13",
-    title: "AI Agents & Next Steps",
-    color: "from-primary to-accent",
-    sessions: [
-      { time: "7:00 PM", topic: "AI Agents, RAG & Tool Use" },
-      { time: "7:30 PM", topic: "Q&A, Career Paths & Resources" },
-    ],
-  },
-];
-
 const ScheduleSection = () => {
   const { t } = useTranslation();
   const { ref: titleRef, isRevealed: titleRevealed } = useScrollReveal({ threshold: 0.3 });
   const { ref: gridRef, isRevealed: gridRevealed } = useScrollReveal({ threshold: 0.1 });
   const { ref: parallaxRef, offset: parallaxOffset } = useParallax(0.2);
 
+  // ✅ Days array moved inside component to use t()
+  const days = [
+    {
+      day: "Day 1",
+      date: "March 9",
+      titleKey: "day1Title",
+      color: "from-primary to-accent",
+      sessions: [
+        { time: "7:00 PM", topicKey: "day1s1" },
+        { time: "7:30 PM", topicKey: "day1s2" },
+      ],
+    },
+    {
+      day: "Day 2",
+      date: "March 10",
+      titleKey: "day2Title",
+      color: "from-accent to-primary",
+      sessions: [
+        { time: "7:00 PM", topicKey: "day2s1" },
+        { time: "7:30 PM", topicKey: "day2s2" },
+      ],
+    },
+    {
+      day: "Day 3",
+      date: "March 11",
+      titleKey: "day3Title",
+      color: "from-primary to-accent",
+      sessions: [
+        { time: "7:00 PM", topicKey: "day3s1" },
+        { time: "7:30 PM", topicKey: "day3s2" },
+      ],
+    },
+    {
+      day: "Day 4",
+      date: "March 12",
+      titleKey: "day4Title",
+      color: "from-accent to-primary",
+      sessions: [
+        { time: "7:00 PM", topicKey: "day4s1" },
+        { time: "7:30 PM", topicKey: "day4s2" },
+      ],
+    },
+    {
+      day: "Day 5",
+      date: "March 13",
+      titleKey: "day5Title",
+      color: "from-primary to-accent",
+      sessions: [
+        { time: "7:00 PM", topicKey: "day5s1" },
+        { time: "7:30 PM", topicKey: "day5s2" },
+      ],
+    },
+  ];
+
   return (
     <section id="schedule" className="py-32 px-6 relative overflow-hidden section-fade-accent video-bg-light particle-bg-light quantum-field-bg">
-      {/* Enhanced background effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5 opacity-40" />
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-[120px] opacity-30 animate-parallax-float" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-[120px] opacity-30 animate-parallax-float" style={{ animationDelay: '2s' }} />
@@ -76,7 +76,6 @@ const ScheduleSection = () => {
         style={{ transform: `translateY(${parallaxOffset * 0.5}px)` }}
       />
 
-      {/* Animated connection lines */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1200 800">
         <motion.path
           d="M200,400 Q400,300 600,400 T1000,400"
@@ -102,11 +101,9 @@ const ScheduleSection = () => {
           ref={titleRef}
           className={`text-center mb-20 ${titleRevealed ? 'scroll-reveal revealed' : 'scroll-reveal'}`}
         >
-          <motion.div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-advanced mb-6 animate-slide-up"
-          >
+          <motion.div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-advanced mb-6 animate-slide-up">
             <Clock className="w-5 h-5 text-accent animate-bounce-subtle" />
-            <span className="text-sm font-mono-display text-accent font-bold">5-Day Intensive</span>
+            <span className="text-sm font-mono-display text-accent font-bold">{t("scheduleBadge")}</span>
           </motion.div>
 
           <h2 className="text-display-xl mb-6 leading-tight text-center">
@@ -115,7 +112,7 @@ const ScheduleSection = () => {
               className="text-foreground text-readable"
               delay={0.1}
             />
-            <span className="text-gradient-animated ml-4">Timeline</span>
+            <span className="text-gradient-animated ml-4">{t("scheduleTimeline")}</span>
           </h2>
 
           <motion.p
@@ -124,16 +121,13 @@ const ScheduleSection = () => {
             animate={titleRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            {t("fiveEvenings")} of intensive learning, from{" "}
-            <span className="text-primary font-semibold">fundamentals to advanced applications</span>
-            , building your expertise in generative AI.
+            {t("fiveEvenings")} {t("scheduleSubtitle")}{" "}
+            <span className="text-primary font-semibold">{t("scheduleSubtitleHighlight")}</span>
+            {t("scheduleSubtitleEnd")}
           </motion.p>
         </motion.div>
 
-        <motion.div
-          ref={gridRef}
-          className="grid md:grid-cols-2 lg:grid-cols-5 gap-6"
-        >
+        <motion.div ref={gridRef} className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
           {days.map((day, idx) => (
             <motion.div
               key={day.day}
@@ -142,24 +136,12 @@ const ScheduleSection = () => {
               }`}
               initial={{ opacity: 0, y: 50, rotateY: -15 }}
               animate={gridRevealed ? { opacity: 1, y: 0, rotateY: 0 } : { opacity: 0, y: 50, rotateY: -15 }}
-              transition={{
-                duration: 0.8,
-                delay: idx * 0.2,
-                ease: [0.25, 0.46, 0.45, 0.94]
-              }}
-              whileHover={{
-                scale: 1.05,
-                rotateY: 5,
-                z: 50,
-              }}
-              style={{
-                transformStyle: "preserve-3d",
-              }}
+              transition={{ duration: 0.8, delay: idx * 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+              whileHover={{ scale: 1.05, rotateY: 5, z: 50 }}
+              style={{ transformStyle: "preserve-3d" }}
             >
-              {/* Animated background */}
               <div className={`absolute inset-0 bg-gradient-to-br ${day.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500 animate-background-fade`} />
 
-              {/* Connection indicator */}
               {idx < days.length - 1 && (
                 <motion.div
                   className="absolute -right-3 top-1/2 w-6 h-0.5 bg-gradient-to-r from-primary to-accent opacity-50"
@@ -174,7 +156,7 @@ const ScheduleSection = () => {
                   {day.day}
                 </div>
                 <h3 className="text-xl font-bold font-mono-display text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
-                  {day.title}
+                  {t(day.titleKey as any)}
                 </h3>
                 <p className="text-xs text-muted-foreground mb-4 font-semibold">{day.date}</p>
 
@@ -193,14 +175,13 @@ const ScheduleSection = () => {
                           {session.time}
                         </p>
                         <p className="text-muted-foreground text-xs leading-relaxed">
-                          {session.topic}
+                          {t(session.topicKey as any)}
                         </p>
                       </div>
                     </motion.div>
                   ))}
                 </div>
 
-                {/* Hover effect indicator */}
                 <motion.div
                   className="absolute top-4 right-4 w-3 h-3 bg-accent rounded-full opacity-0 group-hover:opacity-100"
                   animate={{ scale: [1, 1.2, 1] }}
@@ -230,7 +211,7 @@ const ScheduleSection = () => {
                 />
               ))}
             </div>
-            <span className="text-sm text-muted-foreground ml-2">5 Days • 10 Sessions</span>
+            <span className="text-sm text-muted-foreground ml-2">{t("timelineDays")}</span>
           </div>
         </motion.div>
       </div>

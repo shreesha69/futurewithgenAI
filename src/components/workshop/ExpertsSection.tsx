@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Brain, ExternalLink } from "lucide-react";
+import { useTranslation } from "@/i18n";
 
-// replace these with real LinkedIn profiles or well-known GenAI figures
 const experts = [
   {
     name: "Andrew Ng",
@@ -26,10 +26,10 @@ const experts = [
 
 const ExpertsSection = () => {
   const { ref, isRevealed } = useScrollReveal({ threshold: 0.2 });
+  const { t } = useTranslation();
 
   return (
     <section id="experts" className="py-32 px-6 relative overflow-hidden section-fade-primary video-bg-light particle-bg-light neural-network-bg">
-      {/* Enhanced background effects */}
       <div className="absolute inset-0 dot-pattern opacity-20" />
       <div className="absolute inset-0 grid-lines opacity-10" />
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/5 via-transparent to-accent/5 animate-background-fade" />
@@ -74,15 +74,13 @@ const ExpertsSection = () => {
           animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.8 }}
         >
-          <motion.div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-advanced mb-6 animate-slide-up shadow-xl"
-          >
+          <motion.div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-advanced mb-6 animate-slide-up shadow-xl">
             <Brain className="w-5 h-5 text-primary animate-bounce-subtle" />
-            <span className="text-sm font-mono-display text-primary font-bold">Thought Leaders</span>
+            <span className="text-sm font-mono-display text-primary font-bold">{t("thoughtLeaders")}</span>
           </motion.div>
 
           <h2 className="text-display-xl mb-6 leading-tight text-shadow-strong">
-            GenAI Thought Leaders
+            {t("expertsSectionTitle")}
           </h2>
 
           <motion.p
@@ -91,8 +89,8 @@ const ExpertsSection = () => {
             animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            Insights from pioneers shaping the future of{" "}
-            <span className="text-primary font-semibold">generative AI</span>.
+            {t("expertsSubtitle")}{" "}
+            <span className="text-primary font-semibold">{t("expertsSubtitleHighlight")}</span>.
           </motion.p>
         </motion.div>
 
@@ -109,11 +107,8 @@ const ExpertsSection = () => {
                 rotateY: 5,
                 boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
               }}
-              style={{
-                transformStyle: "preserve-3d",
-              }}
+              style={{ transformStyle: "preserve-3d" }}
             >
-              {/* Animated background gradient */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 rounded-2xl animate-background-fade opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
               <div className="relative z-10">
@@ -134,17 +129,16 @@ const ExpertsSection = () => {
                   href={person.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-primary underline hover:text-accent transition-colors duration-300 group-hover:scale-105 transform"
+                  className="inline-flex items-center gap-2 text-primary underline hover:text-accent transition-colors duration-300"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  LinkedIn Profile
+                  {t("linkedinProfile")}
                 </a>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Bottom accent line */}
         <motion.div
           className="mt-16 flex justify-center"
           initial={{ opacity: 0, scaleX: 0 }}
