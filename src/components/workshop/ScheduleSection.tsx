@@ -10,7 +10,6 @@ const ScheduleSection = () => {
   const { ref: gridRef, isRevealed: gridRevealed } = useScrollReveal({ threshold: 0.1 });
   const { ref: parallaxRef, offset: parallaxOffset } = useParallax(0.2);
 
-  // ✅ Days array moved inside component to use t()
   const days = [
     {
       day: "Day 1",
@@ -76,24 +75,26 @@ const ScheduleSection = () => {
         style={{ transform: `translateY(${parallaxOffset * 0.5}px)` }}
       />
 
+      {/* ✅ FIXED: replaced motion.path with regular path + motion wrapper */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1200 800">
-        <motion.path
-          d="M200,400 Q400,300 600,400 T1000,400"
-          stroke="url(#gradient)"
-          strokeWidth="2"
-          fill="none"
-          opacity="0.3"
-          initial={{ pathLength: 0 }}
-          animate={gridRevealed ? { pathLength: 1 } : { pathLength: 0 }}
-          transition={{ duration: 2, delay: 0.5 }}
-        />
         <defs>
-          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <linearGradient id="scheduleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="hsl(var(--primary))" />
             <stop offset="50%" stopColor="hsl(var(--accent))" />
             <stop offset="100%" stopColor="hsl(var(--primary))" />
           </linearGradient>
         </defs>
+        {/* ✅ Using regular path — no d animation */}
+        <path
+          d="M200,400 Q400,300 600,400 T1000,400"
+          stroke="url(#scheduleGradient)"
+          strokeWidth="2"
+          fill="none"
+          opacity="0.3"
+          strokeDasharray="1000"
+          strokeDashoffset={gridRevealed ? 0 : 1000}
+          style={{ transition: "stroke-dashoffset 2s ease 0.5s" }}
+        />
       </svg>
 
       <div className="max-w-7xl mx-auto relative z-10">
